@@ -6,10 +6,12 @@ import ma.emsi.patientsmvc.repositories.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -30,6 +32,24 @@ public class PatientController {
         model.addAttribute("pages", new int[pagePatients.getTotalPages()]);
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword", keyword);
-        return "Patients";
+        return "patients";
+    }
+
+    @GetMapping("/delete")
+    public String delete(Long id, String keyword, int page) {
+        patientRepository.deleteById(id);
+        return "redirect:/index?page="+page+"&keyword="+keyword;
+    }
+
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/index";
+    }
+
+    /// Rendu côté client qu'on va voir par la suite avec AngularJS
+    @GetMapping("/patients")
+    @ResponseBody // JSON annotation
+    public List<Patient> patientList() {
+        return patientRepository.findAll();
     }
 }

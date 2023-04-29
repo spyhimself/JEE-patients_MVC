@@ -23,6 +23,7 @@
                         <th>Date de Naissance</th>
                         <th>Malade</th>
                         <th>Score</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,6 +33,10 @@
                         <td th:text="${p.dataNaissance}"></td>
                         <td th:text="${p.malade}"></td>
                         <td th:text="${p.score}"></td>
+                        <td>
+                            <a class="btn btn-danger" th:href="@{delete(id = ${p.id}, keyword = ${keyword},
+                            page = ${currentPage})}" onclick="confirm('êtes-vous sure ?')">Delete</a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
