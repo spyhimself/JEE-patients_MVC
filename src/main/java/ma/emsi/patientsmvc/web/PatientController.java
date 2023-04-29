@@ -9,10 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -38,8 +35,8 @@ public class PatientController {
         return "patients";
     }
 
-    @GetMapping("/deletePatient")
-    public String deletePatient(Long id, String keyword, int page) {
+    @GetMapping("/delete")
+    public String delete(Long id, String keyword, int page) {
         patientRepository.deleteById(id);
         return "redirect:/index?page="+page+"&keyword="+keyword;
     }
@@ -47,26 +44,6 @@ public class PatientController {
     @GetMapping("/")
     public String home() {
         return "redirect:/index";
-    }
-
-    @GetMapping("/formPatient")
-    public String formPatient(Model model) {
-        model.addAttribute("patient", new Patient());
-        return "formPatient";
-    }
-
-    @PostMapping("/savePatient")
-    public String savePatient(@Validated Patient patient, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) return "formPatient";
-        patientRepository.save(patient);
-        return "formPatient";
-    }
-
-    @GetMapping("/editPatient")
-    public String editPatient(@RequestParam(name = "id") Long id, Model model){
-        Patient patient = patientRepository.findById(id).get();
-        model.addAttribute("patient", patient);
-        return "editPatient";
     }
 
     /// Rendu côté client qu'on va voir par la suite avec AngularJS
